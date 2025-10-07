@@ -1,42 +1,27 @@
-name: "Run IDK Discord AI Chatbot"
+name: Run IDK Bot
 
 on:
-  push:
   workflow_dispatch:
-  schedule:
-    - cron: "*/30 * * * *"  # restart every 30 minutes to keep alive
+  push:
+    branches: [ main ]
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
-
-    # Allow GitHub Actions to push commits (for chat logs)
-    permissions:
-      contents: write
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Configure Git identity
-        run: |
-          git config --global user.email "bot@github.com"
-          git config --global user.name "GitHub Actions Bot"
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.10"
 
       - name: Install dependencies
-        run: |
-          pip install discord.py requests flask pytz
+        run: pip install discord.py requests flask pytz
 
-      - name: Run Discord AI Bot
+      - name: Start IDK Discord Chatbot
         env:
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "✅ Starting IDK Discord AI Chatbot..."
-          python3 main.py
+        run: python main.py
