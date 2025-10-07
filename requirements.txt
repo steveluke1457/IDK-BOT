@@ -1,4 +1,6 @@
-discord.py
-requests
-flask
-pytz
+discord.py==2.3.2
+requests==2.31.0
+flask==3.0.3
+pytz==2024.1
+difflib==0.1
+
